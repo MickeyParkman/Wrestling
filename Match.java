@@ -11,6 +11,7 @@ public class Match{
    private String winStatement;
    
    public Match(int matchNumber){
+      this.winner = -1;
       this.matchNumber = matchNumber;
    }
    
@@ -19,9 +20,9 @@ public class Match{
    }
    
    public Wrestler getWinner(){
-      if(winner == 1)
+      if(winner == 0)
          return wrestler1;
-      else if(winner == 2)
+      else if(winner == 1)
          return wrestler2;
       else   
          return null;
