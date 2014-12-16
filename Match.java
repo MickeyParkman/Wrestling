@@ -2,7 +2,7 @@ public class Match{
    
    private int matchNumber;
    
-   private String wrestler1, wrestler2;
+   private Wrestler wrestler1, wrestler2;
    private int winner;
    
    //stores the information on how the wrestler won. ie pin 1:23
@@ -16,17 +16,20 @@ public class Match{
       this.winner = winner;
    }
    
-   public String getWinner(){
+   public Wrestler getWinner(){
       if(winner == 1)
          return wrestler1;
       else if(winner == 2)
          return wrestler2;
       else   
-         return "";
+         return null;
    }
    
    public String toString(){
-      return getWinner() + " " + winStatement;
+      if(winner == 0)
+         return "";
+      else
+         return getWinner().name + " " + winStatement;
    }
    
 }
