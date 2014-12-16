@@ -5,6 +5,8 @@ public class Match{
    private Wrestler wrestler1, wrestler2;
    private int winner;
    
+   private int weightClass;
+   
    //stores the information on how the wrestler won. ie pin 1:23
    private String winStatement;
    
@@ -23,6 +25,10 @@ public class Match{
          return wrestler2;
       else   
          return null;
+   }
+   
+   public void setWinStatement(String statement){
+      this.winStatement = statement;
    }
    
    public String toString(){
