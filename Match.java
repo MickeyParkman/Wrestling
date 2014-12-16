@@ -6,7 +6,7 @@ public class Match{
    private int winner;
    
    //stores the information on how the wrestler won. ie pin 1:23
-   String winStatement;
+   private String winStatement;
    
    public Match(int matchNumber){
       this.matchNumber = matchNumber;
@@ -23,6 +23,10 @@ public class Match{
          return wrestler2;
       else   
          return "";
+   }
+   
+   public String toString(){
+      return getWinner() + " " + winStatement;
    }
    
 }
