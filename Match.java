@@ -19,6 +19,14 @@ public class Match{
       this.winner = winner;
    }
    
+   public void setWrestler(int wrestlerNum, Wrestler wrestler){
+      if(wrestlerNum == 0){
+         wrestler1 = wrestler;
+      }else{
+         wrestler2 = wrestler;
+      }
+   }
+   
    public Wrestler getWinner(){
       if(winner == 0)
          return wrestler1;
@@ -37,6 +45,10 @@ public class Match{
          return "";
       else
          return getWinner().name + " " + winStatement;
+   }
+   
+   public void printMatchUp(){
+      System.out.println(wrestler1.name + " vs " + wrestler2.name);
    }
    
 }
