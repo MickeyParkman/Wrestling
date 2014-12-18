@@ -1,11 +1,10 @@
 public class Match{
    
    private int matchNumber;
-   
+   private int weightClass;
    private Wrestler wrestler1, wrestler2;
    private int winner;
-   
-   private int weightClass;
+   private boolean isConsolation;
    
    //stores the information on how the wrestler won. ie pin 1:23
    private String winStatement;
@@ -51,4 +50,9 @@ public class Match{
       System.out.println(wrestler1.name + " vs " + wrestler2.name);
    }
    
+   public void updateMatch(int winner) {
+      this.winner = winner;
+      int offset = weightClass * Tournament.getNumMatches();
+      int matchIndex = matchNumber - weightClass *    
+      // first offset = numWrestlers 
 }

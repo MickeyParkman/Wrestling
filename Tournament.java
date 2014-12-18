@@ -10,7 +10,7 @@ public class Tournament{
    //The wrestlers will already be sorted by seed
    public Tournament(/*Wrestler[][] wrestlers*/){
       //brackets = new Bracket[14];
-      matches = new Match[getNumMatches(NUM_BRACKETS)];
+      matches = new Match[getNumMatches * NUM_BRACKETS];
       for(int i = 0; i < matches.length; i++)
          matches[i] = new Match(i);
       
@@ -163,7 +163,7 @@ public class Tournament{
    }
    
    // returns the number of matches in each bracket
-   private int getNumMatches(int numBrackets){
+   public int getNumMatches(){
       int total = 0;
       int roundNum = 0;
       int currRound = wrestlersPerBracket * numBrackets / 2;
