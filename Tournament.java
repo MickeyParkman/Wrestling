@@ -3,14 +3,14 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
-   private int wrestlersPerBracket = 8;
+   private static int wrestlersPerBracket = 16;
    private static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
    //The wrestlers will already be sorted by seed
    public Tournament(/*Wrestler[][] wrestlers*/){
       //brackets = new Bracket[14];
-      matches = new Match[getNumMatches * NUM_BRACKETS];
+         matches = new Match[getNumMatches() * NUM_BRACKETS];
       for(int i = 0; i < matches.length; i++)
          matches[i] = new Match(i);
       
@@ -19,14 +19,15 @@ public class Tournament{
             
       for(int i = 0; i < NUM_BRACKETS; i++){
          System.out.println("Weight " + temp[i][0].getWeight());
-         int startIndex = bracketNum * wrestlers.length;
-         for(int i = 0; i < temp[i].length / 2; i++){
-            Tournament.matches[startIndex + i].setWrestler(0, wrestlers[i]);
-            Tournament.matches[startIndex + i].setWrestler(1, wrestlers[wrestlers.length - 1 - i]);
+         int startIndex = i * temp[i].length;
+         for(int j = 0; j < temp[i].length / 2; j++){
+            Tournament.matches[startIndex + j].setWrestler(0, temp[i][j]);
+            Tournament.matches[startIndex + j].setWrestler(1, temp[i][temp[i].length - 1 - j]);
             Tournament.matches[startIndex + i].printMatchUp();
          }      
          System.out.println();
       }      
+
    }
    
    public void initTestArrays(Wrestler[][] temp){
@@ -163,12 +164,13 @@ public class Tournament{
    }
    
    // returns the number of matches in each bracket
-   public int getNumMatches(){
+   public static int getNumMatches(){
       int total = 0;
       int roundNum = 0;
-      int currRound = wrestlersPerBracket * numBrackets / 2;
-      while(currRound != 2 * numBrackets || roundNum == 0){
-         if(roundNum > 1)
+      int lastRound = 6;
+      int currRound = wrestlersPerBracket * NUM_BRACKETS;
+      while(roundNum < lastRound || roundNum == 0){
+         if(roundNum % 2 == 0)
             currRound /= 2;
          total += currRound;
          roundNum++;

@@ -53,6 +53,7 @@ public class Match{
    public void updateMatch(int winner) {
       this.winner = winner;
       int offset = weightClass * Tournament.getNumMatches();
-      int matchIndex = matchNumber - weightClass *    
+      int matchIndex = matchNumber - weightClass;  
       // first offset = numWrestlers 
+   }
 }
