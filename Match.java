@@ -62,41 +62,41 @@ public class Match{
       }
       int winCond = winType % 10;
       int scoreAdd;
-      // also need to clear matchLoser's byPoints
+      // also need to clear matchLoser's byePoints
       switch(winCond) {
          case 0:  winStatement = "ff";
-                  scoreAdd = matchWinner.byPoints + 6;
+                  scoreAdd = matchWinner.byePoints + 6;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
          case 1:  winStatement = "Bye";
                   scoreAdd = 0;
-                  matchWinner.byPoints += 6;
+                  matchWinner.byePoints += 6;
                   break;
          case 2:  winStatement = "Injury";
-                  scoreAdd = matchWinner.byPoints + 6;
+                  scoreAdd = matchWinner.byePoints + 6;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
          case 3:  winStatement = "Decision, " + winCondition;
-                  scoreAdd = matchWinner.byPoints + 3;
+                  scoreAdd = matchWinner.byePoints + 3;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
          case 4:  winStatement = "Major Decision, " + winCondition;
-                  scoreAdd = matchWinner.byPoints + 4;
+                  scoreAdd = matchWinner.byePoints + 4;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
          case 5:  winStatement = "Tech, " + winCondition;
-                  scoreAdd = matchWinner.byPoints + 5;
+                  scoreAdd = matchWinner.byePoints + 5;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
          case 6:  winStatement = "Pin, time: " + winCondition;
-                  scoreAdd = matchWinner.byPoints + 6;
+                  scoreAdd = matchWinner.byePoints + 6;
                   matchWinner.addTournamentScore(scoreAdd);
-                  matchWinner.byPoints = 0;
+                  matchWinner.byePoints = 0;
                   break;
       }
       if (matchWinner.isScorer) {
