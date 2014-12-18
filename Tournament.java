@@ -29,6 +29,22 @@ public class Tournament{
       }      
    }
    
+   // returns the number of matches in each bracket
+   public static int getNumMatches(){
+      int total = 0;
+      int roundNum = 0;
+      int lastRound = (int) (Math.log(wrestlersPerBracket) / Math.log(2)) * 2 - 2;
+      int currRound = wrestlersPerBracket * NUM_BRACKETS;
+      while(roundNum < lastRound || roundNum == 0){
+         if(roundNum % 2 == 0)
+            currRound /= 2;
+         total += currRound;
+         roundNum++;
+      }
+      return total;
+   }
+
+   
    public void initTestArrays(Wrestler[][] temp){
       temp[0][0] = new Wrestler("Michael", 106, true, 12, 1);
       temp[0][1] = new Wrestler("David", 106, true, 12, 2);
@@ -161,20 +177,4 @@ public class Tournament{
    public static void main(String[] args){
       new Tournament();
    }
-   
-   // returns the number of matches in each bracket
-   public static int getNumMatches(){
-      int total = 0;
-      int roundNum = 0;
-      int lastRound = (int) (Math.log(wrestlersPerBracket) / Math.log(2)) * 2 - 2;
-      int currRound = wrestlersPerBracket * NUM_BRACKETS;
-      while(roundNum < lastRound || roundNum == 0){
-         if(roundNum % 2 == 0)
-            currRound /= 2;
-         total += currRound;
-         roundNum++;
-      }
-      return total;
-   }
-
 }
