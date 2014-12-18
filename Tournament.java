@@ -3,14 +3,14 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
-   private static int wrestlersPerBracket = 16;
+   private static int wrestlersPerBracket = 32;
    private static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
    //The wrestlers will already be sorted by seed
    public Tournament(/*Wrestler[][] wrestlers*/){
       //brackets = new Bracket[14];
-         matches = new Match[getNumMatches() * NUM_BRACKETS];
+      matches = new Match[getNumMatches() * NUM_BRACKETS];
       for(int i = 0; i < matches.length; i++)
          matches[i] = new Match(i);
       
@@ -27,7 +27,6 @@ public class Tournament{
          }      
          System.out.println();
       }      
-
    }
    
    public void initTestArrays(Wrestler[][] temp){
@@ -167,7 +166,7 @@ public class Tournament{
    public static int getNumMatches(){
       int total = 0;
       int roundNum = 0;
-      int lastRound = 6;
+      int lastRound = (int) (Math.log(wrestlersPerBracket) / Math.log(2)) * 2 - 2;
       int currRound = wrestlersPerBracket * NUM_BRACKETS;
       while(roundNum < lastRound || roundNum == 0){
          if(roundNum % 2 == 0)
