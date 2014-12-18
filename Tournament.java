@@ -4,21 +4,27 @@ public class Tournament{
    public Bracket[] brackets;
    public static Match[] matches;
    private int wrestlersPerBracket = 8;
+   private static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
    //The wrestlers will already be sorted by seed
    public Tournament(/*Wrestler[][] wrestlers*/){
-      brackets = new Bracket[14];
-      matches = new Match[getNumMatches(brackets.length)];
+      //brackets = new Bracket[14];
+      matches = new Match[getNumMatches(NUM_BRACKETS)];
       for(int i = 0; i < matches.length; i++)
          matches[i] = new Match(i);
       
-      Wrestler[][] temp = new Wrestler[brackets.length][wrestlersPerBracket];
+      Wrestler[][] temp = new Wrestler[NUM_BRACKETS][wrestlersPerBracket];
       initTestArrays(temp);
             
-      for(int i = 0; i < brackets.length; i++){
+      for(int i = 0; i < NUM_BRACKETS; i++){
          System.out.println("Weight " + temp[i][0].getWeight());
-         brackets[i] = new Bracket(i, temp[i]);
+         int startIndex = bracketNum * wrestlers.length;
+         for(int i = 0; i < temp[i].length / 2; i++){
+            Tournament.matches[startIndex + i].setWrestler(0, wrestlers[i]);
+            Tournament.matches[startIndex + i].setWrestler(1, wrestlers[wrestlers.length - 1 - i]);
+            Tournament.matches[startIndex + i].printMatchUp();
+         }      
          System.out.println();
       }      
    }
@@ -156,6 +162,7 @@ public class Tournament{
       new Tournament();
    }
    
+   // returns the number of matches in each bracket
    private int getNumMatches(int numBrackets){
       int total = 0;
       int roundNum = 0;
