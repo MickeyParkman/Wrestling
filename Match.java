@@ -3,7 +3,7 @@ public class Match{
    private int matchNumber;
    private int weightClass;
    private Wrestler wrestler1, wrestler2;
-   private int winner;
+   private int winner; // consider making Wrestler type winner
    private boolean isConsolation;
    
    //stores the information on how the wrestler won. ie pin 1:23
@@ -14,9 +14,9 @@ public class Match{
       this.matchNumber = matchNumber;
    }
    
-   public void setWinner(int winner){
-      this.winner = winner;
-   }
+   //public void setWinner(int winner){
+     // this.winner = winner;
+   //}
    
    public void setWrestler(int wrestlerNum, Wrestler wrestler){
       if(wrestlerNum == 0){
@@ -50,10 +50,59 @@ public class Match{
       System.out.println(wrestler1.name + " vs " + wrestler2.name);
    }
    
-   public void updateMatch(int winner) {
-      this.winner = winner;
-      int offset = weightClass * Tournament.getNumMatches();
-      int matchIndex = matchNumber - weightClass;  
+   public void updateMatch(int winType, String winCondition) {
+      winner = winType / 10;
+      //int offset = weightClass * Tournament.getNumMatches();
+      //int matchIndex = matchNumber - weightClass;
+      Wrestler matchWinner;
+      if (winner == 0){
+         matchWinner == wrestler1;
+      } else {
+         matchWinner == wrestler2;
+      }
+      int winCond = winType % 10;
+      int scoreAdd;
+      // also need to clear matchLoser's byPoints
+      switch(winCond) {
+         case 0:  winStatement = "ff";
+                  scoreAdd = matchWinner.byPoints + 6;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+         case 1:  winStatement = "Bye";
+                  scoreAdd = 0;
+                  matchWinner.byPoints += 6;
+                  break;
+         case 2:  winStatement = "Injury";
+                  scoreAdd = matchWinner.byPoints + 6;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+         case 3:  winStatement = "Decision, " + winCondition;
+                  scoreAdd = matchWinner.byPoints + 3;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+         case 4:  winStatement = "Major Decision, " + winCondition;
+                  scoreAdd = matchWinner.byPoints + 4;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+         case 5:  winStatement = "Tech, " + winCondition;
+                  scoreAdd = matchWinner.byPoints + 5;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+         case 6:  winStatement = "Pin, time: " + winCondition;
+                  scoreAdd = matchWinner.byPoints + 6;
+                  matchWinner.addTournamentScore(scoreAdd);
+                  matchWinner.byPoints = 0;
+                  break;
+      }
+      if (matchWinner.isScorer) {
+         // teamScore.add(scoreAdd);
+      }
       // first offset = numWrestlers 
    }
 }
+
