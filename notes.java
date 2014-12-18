@@ -6,7 +6,7 @@
       this.winner = -1;
       this.matchNumber = matchNumber;
       for(int i = 1; i < startIndexProportions.length; i++){
-         if(matchNumber < startIndexProportions[i]){
+         if(matchNumber < startIndexProportions[i] * Tournament.wrestlersPerBracket){
             roundNum = i - 1;
             break;  
          }

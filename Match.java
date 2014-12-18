@@ -5,13 +5,15 @@ public class Match{
    private Wrestler wrestler1, wrestler2;
    private int winner; // consider making Wrestler type winner
    private boolean isConsolation;
-   
+   private int roundNum;
    //stores the information on how the wrestler won. ie pin 1:23
    private String winStatement;
    
-   public Match(int matchNumber){
+   public Match(int matchNumber, boolean isConsolation, int roundNum){
       this.winner = -1;
       this.matchNumber = matchNumber;
+      this.isConsolation = isConsolation;
+      this.roundNum = roundNum;
    }
    
    //public void setWinner(int winner){

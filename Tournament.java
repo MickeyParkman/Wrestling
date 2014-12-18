@@ -3,7 +3,7 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
-   private static int wrestlersPerBracket = 8;
+   public static int wrestlersPerBracket = 8;
    private static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
@@ -11,8 +11,35 @@ public class Tournament{
    public Tournament(/*Wrestler[][] wrestlers*/){
       //brackets = new Bracket[14];
       matches = new Match[getNumMatches() * NUM_BRACKETS];
-      for(int i = 0; i < matches.length; i++)
-         matches[i] = new Match(i);
+      //for(int i = 0; i < matches.length; i++)
+        // matches[i] = new Match(i);
+      int indexNum = 0;
+      int roundNum = 0;
+      for(int i = 0 ; i < NUM_BRACKETS * wrestlersPerBracket / 2; i++) {
+         matches[i] = new Match(indexNum, true, roundNum);
+         indexNum++;
+      }
+      roundNum++;
+      int matchesPerRound = NUM_BRACKETS / 2;
+      while(indexNum < NUM_BRACKETS * getNumMatches()) {
+         for(int i = 0; i < NUM_BRACKETS; i++) { // do this for all weight classes
+            for(int j = 0; j < matchesPerRound; j++) {
+               matches[j] = new Match(indexNum, true, roundNum); // next championship bracket
+            }
+            roundNum++;
+            for(int j = 0; j < matchesPerRound; j++) {
+               matches[j] = new Match(indexNum, false, roundNum); // next consolation
+            }
+            roundNum--;
+         }
+         roundNum += 2;
+         for(int i = 0; i < NUM_BRACKETS; i++) {
+            for(int j = 0; j < matchesPerRound; j++) { // consolation only round
+               matches[j] = new Match(indexNum, false, roundNum);
+            }
+         }
+         matchesPerRound /= 2;
+      }
       
       Wrestler[][] temp = new Wrestler[NUM_BRACKETS][wrestlersPerBracket];
       initTestArrays(temp);
