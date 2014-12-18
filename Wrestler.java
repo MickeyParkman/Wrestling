@@ -15,6 +15,7 @@ public class Wrestler {
       this.isScorer = isScorer;
       this.grade = grade;
       this.seed = seed;
+      byePoints = 0;
    }
    
    public int getWeight() {

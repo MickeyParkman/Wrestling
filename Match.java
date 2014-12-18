@@ -56,13 +56,14 @@ public class Match{
       //int matchIndex = matchNumber - weightClass;
       Wrestler matchWinner;
       if (winner == 0){
-         matchWinner == wrestler1;
+         matchWinner = wrestler1;
+         wrestler2.byePoints = 0; // bye points are reset for loser
       } else {
-         matchWinner == wrestler2;
+         matchWinner = wrestler2;
+         wrestler1.byePoints = 0; 
       }
       int winCond = winType % 10;
       int scoreAdd;
-      // also need to clear matchLoser's byePoints
       switch(winCond) {
          case 0:  winStatement = "ff";
                   scoreAdd = matchWinner.byePoints + 6;
