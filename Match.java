@@ -15,7 +15,6 @@ public class Match{
    }
    
    public void setWinner(int winner){
-      
       this.winner = winner;
    }
    

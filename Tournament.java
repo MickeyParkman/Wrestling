@@ -3,7 +3,7 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
-   private static int wrestlersPerBracket = 8;
+   private static int wrestlersPerBracket = 32;
    private static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
@@ -23,7 +23,7 @@ public class Tournament{
          for(int j = 0; j < temp[i].length / 2; j++){
             Tournament.matches[startIndex + j].setWrestler(0, temp[i][j]);
             Tournament.matches[startIndex + j].setWrestler(1, temp[i][temp[i].length - 1 - j]);
-            Tournament.matches[startIndex + j].printMatchUp();
+            Tournament.matches[startIndex + i].printMatchUp();
          }      
          System.out.println();
       }      
