@@ -38,6 +38,7 @@ public class Tournament{
                matches[j] = new Match(indexNum, false, roundNum);
             }
          }
+         roundNum++;
          matchesPerRound /= 2;
       }
       
