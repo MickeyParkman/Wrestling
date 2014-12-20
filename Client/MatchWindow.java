@@ -60,7 +60,7 @@ public class MatchWindow extends JPanel{
       gbc_nearfall3.gridy = 3;
       gbc_nearfall3.fill = GridBagConstraints.BOTH;
       
-      JButton technicalViolation = new JButton("Technical Violation");
+      JButton technicalViolation = new JButton("Tech. Violation");
       GridBagConstraints gbc_tech_violation = new GridBagConstraints();
       gbc_tech_violation.gridx = 3;
       gbc_tech_violation.gridy = 3;
@@ -114,7 +114,7 @@ public class MatchWindow extends JPanel{
       gbc_nearfall3_2.gridy = 3;
       gbc_nearfall3_2.fill = GridBagConstraints.BOTH;
       
-      JButton technicalViolation_2 = new JButton("Technical Violation");
+      JButton technicalViolation_2 = new JButton("Tech. Violation");
       GridBagConstraints gbc_tech_violation_2 = new GridBagConstraints();
       gbc_tech_violation_2.gridx = 7;
       gbc_tech_violation_2.gridy = 3;
