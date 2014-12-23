@@ -10,8 +10,8 @@ public class MatchWindow extends JPanel implements Runnable{
    private final Color color2 = Color.RED;
    private final PaperScore paperDisplay;
    
-   private static int minutes;
-   private static int seconds;
+   private static int minutes, lastMinutes;
+   private static int seconds, lastSeconds;
    
    private JLabel wrestlerScore1;
    private JLabel wrestlerScore2;
@@ -26,8 +26,8 @@ public class MatchWindow extends JPanel implements Runnable{
    
    public MatchWindow(){
       thisPanel = this;
-      minutes = 2;
-      seconds = 0;
+      minutes = lastMinutes = 2;
+      seconds = lastSeconds = 0;
       score1 = 0;
       score2 = 0;
       setPreferredSize(new Dimension(WINDOW_WIDTH + 200, WINDOW_HEIGHT + 100));
@@ -60,7 +60,11 @@ public class MatchWindow extends JPanel implements Runnable{
       wrestlerScore2.setHorizontalAlignment(JLabel.CENTER);
       add(wrestlerScore2, gbc);
       
-      time = new JLabel(minutes + ":" + seconds);
+      if(seconds < 10){
+         time = new JLabel(minutes + ":0" + seconds);
+      }else{
+         time = new JLabel(minutes + ":" + seconds);
+      }
       time.setHorizontalAlignment(JLabel.CENTER);
       time.setFont(new Font("Times New Roman", Font.PLAIN, 60));
       gbc.gridx = 3;
@@ -69,29 +73,84 @@ public class MatchWindow extends JPanel implements Runnable{
       gbc.fill = GridBagConstraints.BOTH;
       add(time, gbc);
       
-      JPanel timeAdjustments = new JPanel();
+      JPanel timeControl = new JPanel();
       gbc.gridy = 1;
       
-      JButton play = new JButton("|>");
+      JButton play = new JButton("||>");
       //play.setIcon();
       play.setFocusPainted(false);
       play.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            counting = true;
+            
+            counting = !counting;
          }
       });
       
-      JButton pause = new JButton("||");
-      pause.setFocusPainted(false);
-      pause.addActionListener(new ActionListener(){
+      JButton reset = new JButton("Reset");
+      reset.setFocusPainted(false);
+      reset.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            counting = false;
+            if(!counting){
+               final JFrame resetOptions = new JFrame("Set");
+               resetOptions.setLayout(new FlowLayout());
+               resetOptions.setSize(new Dimension(200, 150));
+               GridBagLayout gbl = new GridBagLayout();
+               gbl.columnWidths = new int[]{100, 100};
+               gbl.rowHeights = new int[]{50, 50, 50};
+               resetOptions.setLayout(gbl);
+               
+               GridBagConstraints gbc = new GridBagConstraints();
+               gbc.fill = GridBagConstraints.BOTH;
+               gbc.gridx = 0;
+               gbc.gridy = 0;
+               JLabel minutesLabel = new JLabel("Minutes: ");
+               minutesLabel.setHorizontalAlignment(JLabel.CENTER);
+               resetOptions.add(minutesLabel, gbc);
+               
+               JLabel secondsLabel = new JLabel("Seconds: ");
+               secondsLabel.setHorizontalAlignment(JLabel.CENTER);
+               gbc.gridx = 1;
+               resetOptions.add(secondsLabel, gbc);
+               
+               final JTextField minutesText = new JTextField(String.valueOf(lastMinutes));
+               minutesText.setHorizontalAlignment(JTextField.CENTER);
+               gbc.gridy = 1;
+               gbc.gridx = 0;
+               resetOptions.add(minutesText, gbc);
+               
+               final JTextField secondsText = new JTextField(String.valueOf(lastSeconds));
+               secondsText.setHorizontalAlignment(JTextField.CENTER);
+               gbc.gridx = 1;
+               resetOptions.add(secondsText, gbc);
+               
+               JButton set = new JButton("Set");
+               set.addActionListener(new ActionListener(){
+                  public void actionPerformed(ActionEvent e){
+                     minutes = lastMinutes = Integer.parseInt(minutesText.getText());
+                     seconds = lastSeconds = Integer.parseInt(secondsText.getText());
+                     if(seconds < 10){
+                        time.setText(minutes + ":0" + seconds);
+                     }else{
+                        time.setText(minutes + ":" + seconds);
+                     }
+                     resetOptions.dispose();
+                  }
+               });
+               gbc.gridx = 0;
+               gbc.gridy = 2;
+               gbc.gridwidth = 2;
+               resetOptions.add(set, gbc);
+               
+               resetOptions.setLocationRelativeTo(null);
+               updateUI();
+               resetOptions.setVisible(true);               
+            }
          }
       });
       
-      timeAdjustments.add(play);
-      timeAdjustments.add(pause);
-      add(timeAdjustments, gbc);
+      timeControl.add(play);
+      timeControl.add(reset);
+      add(timeControl, gbc);
       
       final JLabel period = new JLabel(" Period " + periodNum);
       period.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -107,8 +166,20 @@ public class MatchWindow extends JPanel implements Runnable{
       periodMinus.setFocusPainted(false);
       periodMinus.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            periodNum--;
-            period.setText(" Period " + periodNum);
+            if(periodNum > 1){
+               periodNum--;
+               if(periodNum < 4){
+                  period.setText(" Period " + periodNum);
+               }else if(periodNum == 4){
+                  period.setText("Overtime");
+               }else if(periodNum == 5){
+                  period.setText("Tiebreaker 1");
+               }else if(periodNum == 6){
+                  period.setText("Tiebreaker 2");
+               }else if(periodNum == 7){
+                  period.setText("Ultimate Tiebreaker");
+               }
+            }
          }
       });
       periodChanger.add(periodMinus);
@@ -117,8 +188,20 @@ public class MatchWindow extends JPanel implements Runnable{
       periodPlus.setFocusPainted(false);
       periodPlus.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            periodNum++;
-            period.setText(" Period " + periodNum);
+            if(periodNum < 7){
+               periodNum++;
+               if(periodNum < 4){
+                  period.setText(" Period " + periodNum);
+               }else if(periodNum == 4){
+                  period.setText("Overtime");
+               }else if(periodNum == 5){
+                  period.setText("Tiebreaker 1");
+               }else if(periodNum == 6){
+                  period.setText("Tiebreaker 2");
+               }else if(periodNum == 7){
+                  period.setText("Ultimate Tiebreaker");
+               }
+            }
          }
       });
       periodChanger.add(periodPlus);
