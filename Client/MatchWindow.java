@@ -18,11 +18,14 @@ public class MatchWindow extends JPanel implements Runnable{
    private JLabel time;
    private int score1;
    private int score2;
-   private int periodNum = 2;
+   private int periodNum = 1;
+   final JPanel thisPanel;
    
    private static boolean running = true;
+   private static boolean counting = false;
    
    public MatchWindow(){
+      thisPanel = this;
       minutes = 2;
       seconds = 0;
       score1 = 0;
@@ -31,7 +34,7 @@ public class MatchWindow extends JPanel implements Runnable{
             
       GridBagLayout gbl = new GridBagLayout();
       gbl.columnWidths = new int[]{WINDOW_WIDTH / 16, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 8, WINDOW_WIDTH / 16};
-      gbl.rowHeights = new int[]{WINDOW_HEIGHT / 8, WINDOW_HEIGHT / 8, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 10, WINDOW_HEIGHT / 10, WINDOW_HEIGHT / 10};
+      gbl.rowHeights = new int[]{WINDOW_HEIGHT / 8, WINDOW_HEIGHT / 32, WINDOW_HEIGHT / 16, WINDOW_HEIGHT / 32, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 25, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 10, WINDOW_HEIGHT / 10, WINDOW_HEIGHT / 10};
       setLayout(gbl);
       
       GridBagConstraints gbc = new GridBagConstraints();
@@ -66,13 +69,61 @@ public class MatchWindow extends JPanel implements Runnable{
       gbc.fill = GridBagConstraints.BOTH;
       add(time, gbc);
       
-      JLabel period = new JLabel("Period " + periodNum);
-      period.setHorizontalAlignment(JLabel.CENTER);
-      gbc.gridx = 3;
+      JPanel timeAdjustments = new JPanel();
       gbc.gridy = 1;
-      gbc.gridwidth = 3;
-      gbc.fill = GridBagConstraints.BOTH;
+      
+      JButton play = new JButton("|>");
+      //play.setIcon();
+      play.setFocusPainted(false);
+      play.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            counting = true;
+         }
+      });
+      
+      JButton pause = new JButton("||");
+      pause.setFocusPainted(false);
+      pause.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            counting = false;
+         }
+      });
+      
+      timeAdjustments.add(play);
+      timeAdjustments.add(pause);
+      add(timeAdjustments, gbc);
+      
+      final JLabel period = new JLabel(" Period " + periodNum);
+      period.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      period.setHorizontalAlignment(JLabel.CENTER);
+      gbc.gridy = 2;
       add(period, gbc);
+      
+      JPanel periodChanger = new JPanel();
+      gbc.gridx = 3;
+      gbc.gridy = 3;
+
+      JButton periodMinus = new JButton("-");
+      periodMinus.setFocusPainted(false);
+      periodMinus.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            periodNum--;
+            period.setText(" Period " + periodNum);
+         }
+      });
+      periodChanger.add(periodMinus);
+
+      JButton periodPlus = new JButton("+");
+      periodPlus.setFocusPainted(false);
+      periodPlus.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            periodNum++;
+            period.setText(" Period " + periodNum);
+         }
+      });
+      periodChanger.add(periodPlus);
+      
+      add(periodChanger, gbc);
       
       paperDisplay = new PaperScore(WINDOW_WIDTH / 8 + 8, WINDOW_HEIGHT / 9, WINDOW_HEIGHT / 25);       
       JScrollPane scroll = new JScrollPane(paperDisplay);
@@ -80,14 +131,14 @@ public class MatchWindow extends JPanel implements Runnable{
       scroll.setPreferredSize(new Dimension((WINDOW_WIDTH / 8 + 8) * 7, (WINDOW_HEIGHT / 9) * 3 + (WINDOW_HEIGHT / 25) * 3));
                         
       gbc.gridx = 1;
-      gbc.gridy = 2;
+      gbc.gridy = 4;
       gbc.gridwidth = 7;
       gbc.gridheight = 6;
       add(scroll, gbc);                        
 
       
       int buttonStartX = 1;
-      int buttonStartY = 8;     
+      int buttonStartY = 10;     
       createButton("Takedown", "T2", buttonStartX, buttonStartY, 1, color1);      
       createButton("Escape", "E1", buttonStartX + 1, buttonStartY, 1, color1);      
       createButton("Reversal", "R2", buttonStartX + 2, buttonStartY, 1, color1);      
@@ -130,7 +181,6 @@ public class MatchWindow extends JPanel implements Runnable{
       JButton button = new JButton(text);
       button.setFocusPainted(false);
       button.setForeground(color);
-      final JPanel temp = this;
       button.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
             JButton scoreButton = new JButton(scoreDetails);
@@ -148,7 +198,6 @@ public class MatchWindow extends JPanel implements Runnable{
                score2 += Character.getNumericValue(scoreDetails.charAt(scoreDetails.length() - 1));
                wrestlerScore2.setText(String.valueOf(score2));
             }
-            temp.updateUI();
          }
       });
       GridBagConstraints gbc = new GridBagConstraints();
@@ -162,8 +211,6 @@ public class MatchWindow extends JPanel implements Runnable{
       updateUI();
    }
    
-   //creates a new button to be shown on wrestler 1's score paper
-   //creates a new button to be shown on wrestler 2's score paper
    private void createScoreButton(final String details, final JPanel panel){
       JButton temp = new JButton(details);
       temp.setFocusPainted(false);
@@ -181,22 +228,23 @@ public class MatchWindow extends JPanel implements Runnable{
    public void run(){
       while(running){
          try{
-            seconds -= 1;
-            if(seconds < 0){
-               minutes -= 1;
-               seconds = 59;
-               if(minutes < 0){
-                  running = false;
-                  minutes = 0;
-                  seconds = 0;
+            if(counting){
+               seconds -= 1;
+               if(seconds < 0){
+                  minutes -= 1;
+                  seconds = 59;
+                  if(minutes < 0){
+                     running = false;
+                     minutes = 0;
+                     seconds = 0;
+                  }
                }
+               if(seconds < 10)
+                  time.setText(minutes + ":" + "0" + seconds);
+               else
+                  time.setText(minutes + ":" + seconds);
+               Thread.sleep(1000);
             }
-            if(seconds < 10)
-               time.setText(minutes + ":" + "0" + seconds);
-            else
-               time.setText(minutes + ":" + seconds);
-            updateUI();
-            Thread.sleep(1000);
          }catch(InterruptedException e){
             e.printStackTrace();
          }
