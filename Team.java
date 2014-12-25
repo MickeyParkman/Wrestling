@@ -1,22 +1,53 @@
 //import java.util.scanner;
 
 public class Team {
-   public String teamName;
-   // assign the Wrestler.name as the hashing string
-   private HashTable<String, Wrestler> wrestlers;
-   private int teamScore;
+   public int arraySize;
+   public String[] teams;
+   public int[] scores;
    
-   public Team(String teamName) {
-      this.teamName = teamName;
-      teamScore = 0;
+   public Team() {
+      arraySize = 0;
+      teams = new String[10];
+      scores = new int[10];
    }
    
-   // hashes a wrestler into the table using the wrestler's name as a key
-   public void addWrestler(Wrestler wr) {
-      put(wr.name, wr);
+   // updates the score of the corresponding team, if the team is not
+   // in the array, creates a new slot for the team and sets initial score
+   public void updateScore(String team, int score) {
+      int index = teamIndex(team);
+      if (index == -1) {
+    		if(teams.length == arraySize) { // resize
+   			String[] new_teams = new String[teams.length*2];
+            int[] new_scores = new int[scores.length*2];
+   			for(int i=0; i < arraySize; i++) {
+   				new_teams[i] = teams[i];
+               new_scores[i] = scores[i];
+   			}
+            teams = new_teams;
+            scores = new_scores;
+   		}
+         teams[arraySize] = team;
+         scores[arraySize] = score;
+         arraySize++;
+      } else {
+         scores[index] += score;
+      }
    }
    
-   public void setScore(int score) {
-      teamScore = score;
+   // finds the index of the team
+   private int teamIndex(String team) {
+      for (int i = 0; i < arraySize; i++) {
+         if (teams[i].equals(team)) {
+            return i;
+         }
+      }
+      return -1;
    }
+   
+   public void printScores() {
+      for (int i = 0; i < arraySize; i++) {
+         System.out.println(teams[i] + " : " + scores[i]);
+      }
+   }
+   // david is a sexy stud
 }

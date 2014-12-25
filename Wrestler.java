@@ -1,20 +1,19 @@
 public class Wrestler {
    public final String name;
-   private final int weightClass;
-   private int tournamentScore;   
+   public final String teamName;
+   private int tournamentScore;
    public final boolean isScorer;
    private final int grade;
-   private final int seed;
    public int byePoints;
    
    // TO DO: INCLUDE POINTS FOR A BYE
-   public Wrestler(String name, int weightClass, boolean isScorer, int grade, int seed) {
+   public Wrestler(String name, String teamName, boolean isScorer, int grade) {
       this.name = name;
+      this.teamName = teamName;
       this.weightClass = weightClass;
       tournamentScore = 0;
       this.isScorer = isScorer;
       this.grade = grade;
-      this.seed = seed;
       byePoints = 0;
    }
    
