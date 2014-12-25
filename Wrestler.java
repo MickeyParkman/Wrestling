@@ -9,17 +9,12 @@ public class Wrestler {
    // TO DO: INCLUDE POINTS FOR A BYE
    public Wrestler(String name, String teamName, boolean isScorer, int grade) {
       this.name = name;
-      this.teamName = teamName;
-      this.weightClass = weightClass;
+      this.teamName = teamName;      
       tournamentScore = 0;
       this.isScorer = isScorer;
       this.grade = grade;
       byePoints = 0;
-   }
-   
-   public int getWeight() {
-      return weightClass;
-   }
+   }   
    
    public int getTournamentScore() {
       return tournamentScore;
@@ -35,9 +30,5 @@ public class Wrestler {
    
    public int getGrade() {
       return grade;
-   }
-   
-   public int getSeed() {
-      return seed;
    }
 }

@@ -24,18 +24,21 @@ public class Tournament{
       while(indexNum < NUM_BRACKETS * getNumMatches()) {
          for(int i = 0; i < NUM_BRACKETS; i++) { // do this for all weight classes
             for(int j = 0; j < matchesPerRound; j++) {
-               matches[j] = new Match(indexNum, true, roundNum); // next championship bracket
+               matches[indexNum] = new Match(indexNum, true, roundNum); // next championship bracket
+               indexNum++;
             }
             roundNum++;
             for(int j = 0; j < matchesPerRound; j++) {
-               matches[j] = new Match(indexNum, false, roundNum); // next consolation
+               matches[indexNum] = new Match(indexNum, false, roundNum); // next consolation
+               indexNum++;
             }
             roundNum--;
          }
          roundNum += 2;
          for(int i = 0; i < NUM_BRACKETS; i++) {
             for(int j = 0; j < matchesPerRound; j++) { // consolation only round
-               matches[j] = new Match(indexNum, false, roundNum);
+               matches[indexNum] = new Match(indexNum, false, roundNum);
+               indexNum++;
             }
          }
          roundNum++;
@@ -43,11 +46,12 @@ public class Tournament{
       }
       
       Wrestler[][] temp = new Wrestler[NUM_BRACKETS][wrestlersPerBracket];
+      Parser parse = new Parser(temp);
       initTestArrays(temp);
             
       for(int i = 0; i < NUM_BRACKETS; i++){
-         System.out.println("Weight " + temp[i][0].getWeight());
-         int startIndex = i * temp[i].length;
+         System.out.println("Weight " + i);
+         int startIndex = i * temp[i].length / 2;
          for(int j = 0; j < temp[i].length / 2; j++){
             Tournament.matches[startIndex + j].setWrestler(0, temp[i][j]);
             Tournament.matches[startIndex + j].setWrestler(1, temp[i][temp[i].length - 1 - j]);
@@ -62,7 +66,7 @@ public class Tournament{
       int total = 0;
       int roundNum = 0;
       int lastRound = (int) (Math.log(wrestlersPerBracket) / Math.log(2)) * 2 - 2;
-      int currRound = wrestlersPerBracket * NUM_BRACKETS;
+      int currRound = wrestlersPerBracket;
       while(roundNum < lastRound || roundNum == 0){
          if(roundNum % 2 == 0)
             currRound /= 2;
@@ -74,7 +78,7 @@ public class Tournament{
 
    
    public void initTestArrays(Wrestler[][] temp){
-      temp[0][0] = new Wrestler("Michael", 106, true, 12, 1);
+      /*temp[0][0] = new Wrestler("Michael", 106, true, 12, 1);
       temp[0][1] = new Wrestler("David", 106, true, 12, 2);
       temp[0][2] = new Wrestler("Gordan", 106, true, 12, 3);
       temp[0][3] = new Wrestler("Daniel", 106, true, 12, 4);
@@ -199,7 +203,7 @@ public class Tournament{
       temp[13][5] = new Wrestler("Andrew", 285, true, 12, 6);
       temp[13][6] = new Wrestler("Shane", 285, true, 12, 7);
       temp[13][7] = new Wrestler("Ben", 285, true, 12, 8);
-
+      */
    }
    
    public static void main(String[] args){

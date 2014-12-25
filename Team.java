@@ -11,6 +11,12 @@ public class Team {
       scores = new int[10];
    }
    
+   public Team(int numTeams){
+      arraySize = 0;
+      teams = new String[numTeams];
+      scores = new int[numTeams];
+   }
+   
    // updates the score of the corresponding team, if the team is not
    // in the array, creates a new slot for the team and sets initial score
    public void updateScore(String team, int score) {
