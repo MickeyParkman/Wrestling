@@ -128,4 +128,41 @@ public class PaperScore extends JPanel{
       }
       updateUI();
    }
+   
+   public void removeScoreButton(JButton button, int round, int wrestler){
+      if(wrestler == 1){
+         if(round == 1){
+            period1.remove(button);
+         }else if(round == 2){
+            period2.remove(button);
+         }else if(round == 3){
+            period3.remove(button);
+         }else if(round == 4){
+            overtime.remove(button);
+         }else if(round == 5){
+            tiebreaker1.remove(button);
+         }else if(round == 6){
+            tiebreaker2.remove(button);
+         }else if(round == 7){
+            ultimateTiebreaker.remove(button);
+         }
+      }else if(wrestler == 2){
+         if(round == 1){
+            period1_2.remove(button);
+         }else if(round == 2){
+            period2_2.remove(button);
+         }else if(round == 3){
+            period3_2.remove(button);
+         }else if(round == 4){
+            overtime_2.remove(button);
+         }else if(round == 5){
+            tiebreaker1_2.remove(button);
+         }else if(round == 6){
+            tiebreaker2_2.remove(button);
+         }else if(round == 7){
+            ultimateTiebreaker_2.remove(button);
+         }
+      }
+      updateUI();
+   }
 }
