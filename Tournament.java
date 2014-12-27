@@ -3,8 +3,9 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
+   public static double[] roundToMatchRatio = {0, 7, 14, 17.5, 21, 22.75}; 
    public static int wrestlersPerBracket = 8;
-   private static final int NUM_BRACKETS = 14;
+   public static final int NUM_BRACKETS = 14;
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
    //The wrestlers will already be sorted by seed
@@ -20,7 +21,7 @@ public class Tournament{
          indexNum++;
       }
       roundNum++;
-      int matchesPerRound = NUM_BRACKETS / 2;
+      int matchesPerRound = wrestlersPerBracket / 2;
       while(indexNum < NUM_BRACKETS * getNumMatches()) {
          for(int i = 0; i < NUM_BRACKETS; i++) { // do this for all weight classes
             for(int j = 0; j < matchesPerRound; j++) {
@@ -35,14 +36,16 @@ public class Tournament{
             roundNum--;
          }
          roundNum += 2;
-         for(int i = 0; i < NUM_BRACKETS; i++) {
-            for(int j = 0; j < matchesPerRound; j++) { // consolation only round
-               matches[indexNum] = new Match(indexNum, false, roundNum);
-               indexNum++;
+         if(indexNum < NUM_BRACKETS * getNumMatches() ){
+            for(int i = 0; i < NUM_BRACKETS; i++) {
+               for(int j = 0; j < matchesPerRound; j++) { // consolation only round
+                  matches[indexNum] = new Match(indexNum, false, roundNum);
+                  indexNum++;
+               }
             }
+            roundNum++;
+            matchesPerRound /= 2;
          }
-         roundNum++;
-         matchesPerRound /= 2;
       }
                   
       for(int i = 0; i < NUM_BRACKETS; i++){
@@ -54,7 +57,14 @@ public class Tournament{
             Tournament.matches[startIndex + j].printMatchUp();
          }      
          System.out.println();
-      }      
+      } 
+      
+      for(int i = 0; i < matches.length; i++){
+         matches[i].updateMatch(6, " 1:00");
+      }  
+      
+      for(Match m : matches)
+         m.printMatchUp();   
    }
    
    // returns the number of matches in each bracket
