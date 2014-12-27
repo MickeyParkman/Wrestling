@@ -38,7 +38,7 @@ public class Parser{
          String teamName = files[i].getName();
          scan = new Scanner(files[i]);
          for(int j = 0; scan.hasNextLine(); j++){
-            String temp = cleanString(scan.nextLine());
+            String temp = scan.nextLine().trim();
             try{
                weightClass = getWeightClass(Integer.parseInt(temp));
             }catch(NumberFormatException e){
@@ -55,27 +55,5 @@ public class Parser{
          }
       }
       return -1;
-   }
-   
-   public String cleanString(String s){
-      int startIndex = -1, endIndex = -1;
-      for(int i = 0; i < s.length() / 2 + 1; i++){
-         if(s.charAt(i) != ' ' && startIndex == -1){
-            startIndex = i;
-         }
-         if(s.charAt(s.length() - i - 1) != ' ' && endIndex == -1){
-            endIndex = s.length() - i - 1;
-         }
-      }
-      if(startIndex == -1){
-         startIndex = 0;
-      }
-      if(endIndex == -1){
-         endIndex = s.length() - 1;
-      }
-      if(startIndex != 0 || endIndex != s.length() - 1)
-         return s.substring(startIndex, endIndex + 1);
-      else 
-         return s;
    }
 }

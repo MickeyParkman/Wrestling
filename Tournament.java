@@ -8,7 +8,7 @@ public class Tournament{
    
    //take in a 2d array of wrestlers. outer array is weight classes, inner array is wrestlers
    //The wrestlers will already be sorted by seed
-   public Tournament(/*Wrestler[][] wrestlers*/){
+   public Tournament(Wrestler[][] wrestlers){
       //brackets = new Bracket[14];
       matches = new Match[getNumMatches() * NUM_BRACKETS];
       //for(int i = 0; i < matches.length; i++)
@@ -44,17 +44,13 @@ public class Tournament{
          roundNum++;
          matchesPerRound /= 2;
       }
-      
-      Wrestler[][] temp = new Wrestler[NUM_BRACKETS][wrestlersPerBracket];
-      Parser parse = new Parser(temp);
-      initTestArrays(temp);
-            
+                  
       for(int i = 0; i < NUM_BRACKETS; i++){
          System.out.println("Weight " + i);
-         int startIndex = i * temp[i].length / 2;
-         for(int j = 0; j < temp[i].length / 2; j++){
-            Tournament.matches[startIndex + j].setWrestler(0, temp[i][j]);
-            Tournament.matches[startIndex + j].setWrestler(1, temp[i][temp[i].length - 1 - j]);
+         int startIndex = i * wrestlers[i].length / 2;
+         for(int j = 0; j < wrestlers[i].length / 2; j++){
+            Tournament.matches[startIndex + j].setWrestler(0, wrestlers[i][j]);
+            Tournament.matches[startIndex + j].setWrestler(1, wrestlers[i][wrestlers[i].length - 1 - j]);
             Tournament.matches[startIndex + j].printMatchUp();
          }      
          System.out.println();
@@ -204,9 +200,5 @@ public class Tournament{
       temp[13][6] = new Wrestler("Shane", 285, true, 12, 7);
       temp[13][7] = new Wrestler("Ben", 285, true, 12, 8);
       */
-   }
-   
-   public static void main(String[] args){
-      new Tournament();
    }
 }
