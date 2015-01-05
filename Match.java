@@ -115,22 +115,29 @@ public class Match{
    public void setNextMatchWinner(Wrestler winner){
       int lastRound = (int) (Math.log(Tournament.wrestlersPerBracket) / Math.log(2)) * 2 - 2;
       int nextRound = 0;
-      if(roundNum == 0){
+      if(roundNum == 0)
          nextRound = 1;
-         int mNum = (int)Tournament.roundToMatchRatio[1] * Tournament.wrestlersPerBracket + (int)(matchNumber/2);
-         Match nextMatch = Tournament.matches[mNum];
-         nextMatch.setWrestler(matchNumber % 2, winner);
-      }
-      if(roundNum % 2 == 1){
+      else if(isConsolation)
+         nextRound = roundNum + 1;
+      else
          nextRound = roundNum + 2;
-         int mNum = (int)Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket + (int)(matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / 2;
-         Match nextMatch = Tournament.matches[mNum];
+      int matchesPerRound = matchesPerRound = (int)(Tournament.roundToMatchRatio[roundNum + 1] * Tournament.wrestlersPerBracket - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / Tournament.NUM_BRACKETS;
+      int startNum = (int) (Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket);
+      int mNum = 0;//(int)startNum + ((matchNumber / matchesPerRound) % Tournament.NUM_BRACKETS * matchesPerRound + matchNumber % matchesPerRound / 2);      
+      if(roundNum == 0)
+         mNum = startNum + (int) (matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound * matchesPerRound + matchNumber % matchesPerRound / 2; 
+      else if(!isConsolation){
+         int temp1 = (int)(matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound;
+         mNum = startNum + (int) ((int)(matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound) * matchesPerRound/2 + matchNumber % (matchesPerRound / 2); 
+      }else if(isConsolation && roundNum % 2 == 1){
+         mNum = startNum + (int) (matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound * matchesPerRound/2 + matchNumber % (matchesPerRound / 2);
+      }else{
+         mNum = startNum + (int) (matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound * 2;
+      }
+      Match nextMatch = Tournament.matches[mNum];
+      if(roundNum == 0 || !isConsolation || (isConsolation && roundNum % 2 == 0)){
          nextMatch.setWrestler(matchNumber % 2, winner);
       }else{
-         int matchesPerRound = (int)(Tournament.roundToMatchRatio[nextRound + 1] * Tournament.wrestlersPerBracket - Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket) / Tournament.NUM_BRACKETS;
-         nextRound = roundNum + 1;
-         int mNum = (int)Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket + (int)(matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / 2 + matchesPerRound / 2;
-         Match nextMatch = Tournament.matches[mNum];
          nextMatch.setWrestler(1, winner);
       }
    }
@@ -138,15 +145,21 @@ public class Match{
    public void setNextMatchLoser(Wrestler loser){
       int lastRound = (int) (Math.log(Tournament.wrestlersPerBracket) / Math.log(2)) * 2 - 2;
       int nextRound = roundNum + 1;
-      int matchesPerRound = (int)(Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / Tournament.NUM_BRACKETS;
-      if(roundNum == 0){
-         int mNum = (int) Tournament.roundToMatchRatio[1] * Tournament.wrestlersPerBracket + (int) (matchesPerRound - matchNumber/2);
+      int matchesPerRound = (int)(Tournament.roundToMatchRatio[nextRound + 1] * Tournament.wrestlersPerBracket - Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket) / Tournament.NUM_BRACKETS;
+      /*if(roundNum == 0){
+         int mNum = (int) (Tournament.roundToMatchRatio[1] * Tournament.wrestlersPerBracket + (((int)(matchNumber / matchesPerRound + 1) * matchesPerRound) - 1 - matchNumber % matchesPerRound / 2));
          Match nextMatch = Tournament.matches[mNum];
          nextMatch.setWrestler(0, loser);
-      }else if(roundNum != lastRound){
-         if(roundNum % 2 == 1){
-            int mNum = (int) Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket + matchesPerRound - 1 - (int)(roundNum - Tournament.roundToMatchRatio[roundNum]);
-            Match nextMatch = Tournament.matches[mNum];
+      }else*/ 
+      if(roundNum != lastRound){
+         int mNum = (int) (Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket + (((matchNumber / matchesPerRound) % Tournament.NUM_BRACKETS + 1) * matchesPerRound - 1 - matchNumber % matchesPerRound / 2));
+         Match nextMatch = Tournament.matches[mNum];
+         if(roundNum == 0){
+            nextMatch.setWrestler((matchNumber + 1) % 2, loser);
+         }else if(!isConsolation){
+            int temp1 = (((int)(matchNumber - Tournament.roundToMatchRatio[roundNum] * Tournament.wrestlersPerBracket) / matchesPerRound * 2) % Tournament.NUM_BRACKETS + 1);
+            int temp2 = matchNumber % (matchesPerRound / 2);            
+            mNum = (int) (Tournament.roundToMatchRatio[nextRound] * Tournament.wrestlersPerBracket + (((matchNumber / matchesPerRound) % Tournament.NUM_BRACKETS + 1) * matchesPerRound - 1 - matchNumber % (matchesPerRound / 2)));
             nextMatch.setWrestler(0, loser);
          }
       }

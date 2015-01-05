@@ -17,29 +17,27 @@ public class Tournament{
       int indexNum = 0;
       int roundNum = 0;
       for(int i = 0 ; i < NUM_BRACKETS * wrestlersPerBracket / 2; i++) {
-         matches[i] = new Match(indexNum, true, roundNum);
+         matches[i] = new Match(indexNum, false, roundNum);
          indexNum++;
       }
       roundNum++;
       int matchesPerRound = wrestlersPerBracket / 2;
       while(indexNum < NUM_BRACKETS * getNumMatches()) {
          for(int i = 0; i < NUM_BRACKETS; i++) { // do this for all weight classes
-            for(int j = 0; j < matchesPerRound; j++) {
-               matches[indexNum] = new Match(indexNum, true, roundNum); // next championship bracket
+            for(int j = 0; j < matchesPerRound / 2; j++) {
+               matches[indexNum] = new Match(indexNum, false, roundNum); // next championship bracket
                indexNum++;
             }
-            roundNum++;
-            for(int j = 0; j < matchesPerRound; j++) {
-               matches[indexNum] = new Match(indexNum, false, roundNum); // next consolation
+            for(int j = 0; j < matchesPerRound / 2; j++) {
+               matches[indexNum] = new Match(indexNum, true, roundNum); // next consolation
                indexNum++;
             }
-            roundNum--;
          }
-         roundNum += 2;
+         roundNum++;
          if(indexNum < NUM_BRACKETS * getNumMatches() ){
             for(int i = 0; i < NUM_BRACKETS; i++) {
                for(int j = 0; j < matchesPerRound; j++) { // consolation only round
-                  matches[indexNum] = new Match(indexNum, false, roundNum);
+                  matches[indexNum] = new Match(indexNum, true, roundNum);
                   indexNum++;
                }
             }
