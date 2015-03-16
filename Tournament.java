@@ -11,18 +11,22 @@ public class Tournament{
    //The wrestlers will already be sorted by seed
    public Tournament(Wrestler[][] wrestlers){
       //brackets = new Bracket[14];
-      matches = new Match[getNumMatches() * NUM_BRACKETS];
+      
+      //Find the total number of matches and then add an extra "match" to hold the places of the winners and stuff
+      matches = new Match[getNumMatches() * NUM_BRACKETS + (wrestlersPerBracket / 8 + 1) * NUM_BRACKETS];
       //for(int i = 0; i < matches.length; i++)
         // matches[i] = new Match(i);
       int indexNum = 0;
       int roundNum = 0;
+      int lastRound = (int) (Math.log(wrestlersPerBracket) / Math.log(2)) * 2 - 2;
+      //FOR SOME REASON MATCH 140 IN 8 MAN BRACKET IS CONSOLATION!?!?!?
       for(int i = 0 ; i < NUM_BRACKETS * wrestlersPerBracket / 2; i++) {
          matches[i] = new Match(indexNum, false, roundNum);
          indexNum++;
       }
       roundNum++;
       int matchesPerRound = wrestlersPerBracket / 2;
-      while(indexNum < NUM_BRACKETS * getNumMatches()) {
+      while(indexNum < matches.length) {
          for(int i = 0; i < NUM_BRACKETS; i++) { // do this for all weight classes
             for(int j = 0; j < matchesPerRound / 2; j++) {
                matches[indexNum] = new Match(indexNum, false, roundNum); // next championship bracket
@@ -34,15 +38,16 @@ public class Tournament{
             }
          }
          roundNum++;
-         if(indexNum < NUM_BRACKETS * getNumMatches() ){
+         if(roundNum != lastRound)
+            matchesPerRound /= 2;
+         if(indexNum < matches.length){
             for(int i = 0; i < NUM_BRACKETS; i++) {
                for(int j = 0; j < matchesPerRound; j++) { // consolation only round
                   matches[indexNum] = new Match(indexNum, true, roundNum);
                   indexNum++;
                }
             }
-            roundNum++;
-            matchesPerRound /= 2;
+            roundNum++;            
          }
       }
                   
@@ -57,7 +62,7 @@ public class Tournament{
          System.out.println();
       } 
       
-      for(int i = 0; i < matches.length; i++){
+      for(int i = 0; i < matches.length - 28; i++){
          matches[i].updateMatch(6, " 1:00");
       }  
       
