@@ -2,9 +2,9 @@ public class Match{
    
    private int matchNumber;
    private int weightClass;
-   private Wrestler wrestler1, wrestler2;
+   public Wrestler wrestler1, wrestler2;
    private int winner; // consider making Wrestler type winner
-   private boolean isConsolation;
+   public boolean isConsolation;
    private int roundNum;
    //stores the information on how the wrestler won. ie pin 1:23
    private String winStatement;
@@ -42,10 +42,10 @@ public class Match{
    }
    
    public String toString(){
-      if(winner == 0)
+      if(winner == -1)
          return "";
       else
-         return getWinner().name + " " + winStatement;
+         return wrestler1.name + " vs " + wrestler2.name;
    }
    
    public void printMatchUp(){
