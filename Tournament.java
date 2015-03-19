@@ -43,7 +43,7 @@ public class Tournament{
          roundNum++;
          if(roundNum != lastRound)
             matchesPerRound /= 2;
-         if(indexNum < matches.length){
+         if(indexNum < matches.length - (wrestlersPerBracket / 8 + 1) * NUM_BRACKETS){
             for(int i = 0; i < NUM_BRACKETS; i++) {
                for(int j = 0; j < matchesPerRound; j++) { // consolation only round
                   matches[indexNum] = new Match(indexNum, true, roundNum);
@@ -52,28 +52,30 @@ public class Tournament{
                }
             }
             roundNum++;            
+         }else{
+            for(int i = 0; i < NUM_BRACKETS; i ++){
+               matches[indexNum] = new Match(indexNum, false, roundNum);
+               brackets[i].addMatch(matches[indexNum]);
+               matches[indexNum + 1] = new Match(indexNum, true, roundNum);
+               brackets[i].addMatch(matches[indexNum + 1]);
+               indexNum += 2;
+            }
          }
       }
            
-      brackets[1].showBracket();
+      brackets[0].showBracket();
                   
       for(int i = 0; i < NUM_BRACKETS; i++){
-         System.out.println("Weight " + i);
          int startIndex = i * wrestlers[i].length / 2;
          for(int j = 0; j < wrestlers[i].length / 2; j++){
             Tournament.matches[startIndex + j].setWrestler(0, wrestlers[i][j]);
             Tournament.matches[startIndex + j].setWrestler(1, wrestlers[i][wrestlers[i].length - 1 - j]);
-            Tournament.matches[startIndex + j].printMatchUp();
          }      
-         System.out.println();
       } 
       
       for(int i = 0; i < matches.length - 28; i++){
          matches[i].updateMatch(6, " 1:00");
-      }  
-      
-      for(Match m : matches)
-         m.printMatchUp();   
+      }   
    }
    
    // returns the number of matches in each bracket
