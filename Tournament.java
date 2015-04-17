@@ -63,7 +63,7 @@ public class Tournament{
          }
       }
            
-      brackets[0].showBracket();
+      brackets[0].showConsolation();
                   
       for(int i = 0; i < NUM_BRACKETS; i++){
          int startIndex = i * wrestlers[i].length / 2;
