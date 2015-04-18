@@ -137,7 +137,7 @@ public class Match{
       }else if(isConsolation && roundNum % 2 == 1){
          int temp1 = (int)(matchNumber - startNum) / matchesPerRound;
          int temp2 = (int) startNum + temp1 * matchesPerRound;
-         mNum = nextRoundStartNum + temp1 * matchesPerRound / 2 + (int)(matchNumber - temp2 - 2) % 2;
+         mNum = nextRoundStartNum + temp1 * matchesPerRound / 2 + (int)(matchNumber - temp2 - matchesPerRound/2) % (matchesPerRound/2);
          //mNum = startNum + (int) (matchNumber - startNum) / matchesPerRound * matchesPerRound/2 + matchNumber % (matchesPerRound / 2);
       }else{
          int weight = (int) (matchNumber - startNum) / matchesPerRound;
@@ -168,12 +168,12 @@ public class Match{
             nextMatch = Tournament.matches[mNum];
             nextMatch.setWrestler(matchNumber % 2, loser);            
          }else if(!isConsolation){
-            if(roundNum == 1 || roundNum % 6 == 0){
+            if((roundNum + 1) % 4 != 0){
                int nextRoundWeightStart = weight * matchesPerRound / 2;
                mNum = nextRoundStartNum + nextRoundWeightStart + matchesPerRound / 2 - 1 - (matchNumber - weight * matchesPerRound) % (matchesPerRound / 2);
                nextMatch = Tournament.matches[mNum];
                nextMatch.setWrestler(0, loser);
-            }else if(roundNum % 6 == 1){
+            }else{
                int nextRoundWeightStart = weight * matchesPerRound / 2;
                mNum = nextRoundStartNum + nextRoundWeightStart + (matchNumber - weight * matchesPerRound) % (matchesPerRound / 2);
                nextMatch = Tournament.matches[mNum];

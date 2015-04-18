@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class SeedingMeeting extends JFrame{
    
    private Wrestler[][] theWrestlers;
+   private int numWrestlers;
    private final int WINDOW_WIDTH = 800;
    private final int WINDOW_HEIGHT = 600;
    private static final int[] weights = {106,113,120,126,132,138,145,152,160,170,182,195,220,285};
@@ -14,8 +15,9 @@ public class SeedingMeeting extends JFrame{
    private JPanel currPanel;
    private JScrollPane scroll;
    
-   public SeedingMeeting(Wrestler[][] wrestlers){
+   public SeedingMeeting(Wrestler[][] wrestlers, int numWrestling){
       this.theWrestlers = wrestlers;
+      this.numWrestlers = numWrestling;
       final WrestlerDisplay[] panels = new WrestlerDisplay[wrestlers.length];
       for(int i = 0; i < panels.length; i++){
          panels[i] = new WrestlerDisplay(wrestlers[i]);
@@ -90,7 +92,7 @@ public class SeedingMeeting extends JFrame{
       createBrackets.setFont(font);
       createBrackets.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            new Tournament(theWrestlers);
+            new Tournament(theWrestlers, numWrestlers);
          }
       });
       gbc.gridy = 9;
@@ -111,7 +113,11 @@ public class SeedingMeeting extends JFrame{
          final int buttonHeight = WINDOW_HEIGHT / 8;
          
          for(int i = 0; i < wrestlers.length; i++){
-            final JButton wrestler = new JButton(String.format("%-20s (%s)",wrestlers[i].name, wrestlers[i].teamName));
+            final JButton wrestler;
+            if(wrestlers[i] == null)
+               wrestler = new JButton(String.format("%-20s (%s)","BYE", ""));
+            else
+               wrestler = new JButton(String.format("%-20s (%s)",wrestlers[i].name, wrestlers[i].teamName));
             wrestler.setHorizontalAlignment(JButton.LEFT);
             wrestler.setAlignmentX(Component.CENTER_ALIGNMENT);
             wrestler.setMaximumSize(new Dimension(WINDOW_WIDTH * 6 / 8, buttonHeight));

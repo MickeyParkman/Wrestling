@@ -18,9 +18,22 @@ public class Bracket{
    
    public Bracket(int bracketNum, int numWrestle) {
       this.bracketNum = bracketNum;
-      this.numWrestlers = 8;
-      this.heightOffset = 50;
-      this.heightOffset2 = 30;
+      this.numWrestlers = numWrestle;
+      if(numWrestle == 8)
+      {
+         this.heightOffset = 60;
+         this.heightOffset2 = 10;
+      }
+      else if(numWrestle == 16)
+      {
+         this.heightOffset = 60;
+         this.heightOffset2 = 30;
+      }
+      else
+      {
+         this.heightOffset = 0;
+         this.heightOffset2 = 0;
+      }
       //8  man heightoffset = 0
       //16 man heightoffset2 = 18
       //32 man heightoffset2 = 30
@@ -40,9 +53,9 @@ public class Bracket{
       }  
       matches[numRounds] = new Match[matchesPerRound];
       championship = new JFrame(weights[bracketNum] + "lb. Championship Bracket")
-      {
-         int h = height / numWrestlers;   
+      {           
          public void paint(Graphics g){
+            int h = height / numWrestlers - 2; 
             g.clearRect(0,0,width,height);
             g.setColor(Color.BLACK);
             g.setFont(font);
@@ -73,38 +86,58 @@ public class Bracket{
                if(i % 2 == 0)
                   h *= 2;  
             }
-            h = height / numWrestlers;
          }
       };
       consolation = new JFrame(weights[bracketNum] + "lb. Consolation Bracket")
-      {
-            int h = (int) (height / ((numWrestlers / 2 + Math.floor(numRounds / 2)) * 2));
-            int matchesPerRound = numWrestlers / 4;
+      {            
              
-            public void paint(Graphics g){
+         public void paint(Graphics g)
+         {
+            int h = (int) height / (numWrestlers / 2) - 10;
+            int matchesPerRound = numWrestlers / 4;
+            int yOffset = 0;
+            int yOffConst = 0;
             g.clearRect(0,0,width,height);
             g.setColor(Color.BLACK);
             g.setFont(font);
-            for(int i = 0; i < matches.length; i++){ 
+            for(int i = 1; i < matches.length; i++)
+            { 
                int consolationIndex = 0;
-               for(int j = 1; j < matches[i].length; j++){
-                  if(matches[i][j] != null && matches[i][j].isConsolation){
-                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  (i - 1) * (h / (int)Math.floor((i + 1) / 2.0))/2 - (matchesPerRound - consolationIndex) * 2 * h - h / 2 - 150);
-                     g.drawString(matches[i][j].wrestler2.name, (i - 1) * w + w / 2 - matches[i][j].wrestler2.name.length() * 4, height -  (i - 1) * (h / (int)Math.floor((i + 1) / 2.0))/2 - (matchesPerRound - consolationIndex) * 2 * h + h / 2 - 150);
-                     g.fillRect((i - 1) * w, height -  (i - 1) * (h / (int)Math.floor((i + 1) / 2.0))/2 - (matchesPerRound - consolationIndex) * 2 * h - h / 2 + 15 - 150, w, 2);
-                     g.fillRect((i - 1) * w, height -  (i - 1) * (h / (int)Math.floor((i + 1) / 2.0))/2 - (matchesPerRound - consolationIndex) * 2 * h + h / 2 + 15 - 150, w, 2);
-                     g.fillRect((i - 1) * w + w - 2, height - (i - 1) * (h / (int)Math.floor((i + 1) / 2.0))/2 - (matchesPerRound - consolationIndex) * 2 * h - h / 2 + 15 - 150, 2, h);                                             
+               for(int j = 0; j < matches[i].length; j++){
+                  if(matches[i][j] != null && matches[i][j].isConsolation && i != matches.length - 1){
+                     int y = (matchesPerRound - 1 - consolationIndex) * 2 * h + yOffset;
+                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - h - 25);
+                     g.drawString(matches[i][j].wrestler2.name, (i - 1) * w + w / 2 - matches[i][j].wrestler2.name.length() * 4, height -  y - 25);
+                     g.fillRect((i - 1) * w, height - y - h - 25, w, 2);
+                     g.fillRect((i - 1) * w, height - y - 25, w, 2);
+                     g.fillRect((i - 1) * w + w - 2, height - y - h - 25, 2, h);
                      consolationIndex++;
                   }
-               }
-               if(i % 2 == 0 && h != 0)
+                  else if(matches[i][j] != null && matches[i][j].isConsolation)
+                  {
+                     int y = (matchesPerRound - 1 - consolationIndex) * 2 * h + yOffset;                     
+                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - 25);
+                     g.fillRect((i - 1) * w, height - y - 25, w, 2);
+                     consolationIndex++;
+                  }
+               }                                                           
+               if(i % 2 == 0)
                {
                   h *= 2;  
                   matchesPerRound /= 2;
+                  
                }
+               else
+               {
+                  yOffConst *= 2;
+               }
+               
+               if(yOffset == 0)
+               {
+                  yOffConst = h / 2;
+               } 
+               yOffset += yOffConst;               
             }
-            h = (int) (height / ((numWrestlers / 2 + Math.floor(numRounds / 2)) * 2));
-            matchesPerRound = numWrestlers / 4;
          }     
       };
       championship.setSize(new Dimension(width,height));  

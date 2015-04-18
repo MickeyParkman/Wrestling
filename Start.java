@@ -1,7 +1,10 @@
 public class Start{
    public static void main(String[] args){
-      Wrestler[][] wrestlers = new Wrestler[14][8];
+      int numWrestlers = 8;
+      Wrestler[][] wrestlers = new Wrestler[14][numWrestlers];
       Parser parse = new Parser(wrestlers);
-      SeedingMeeting seeds = new SeedingMeeting(wrestlers);
+      SeedingMeeting seeds = new SeedingMeeting(wrestlers, numWrestlers);
    }
 }
+
+//change stuff in here, parser, and tournament. Pass in num wrestlers?

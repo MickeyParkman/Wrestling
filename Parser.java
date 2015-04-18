@@ -18,11 +18,14 @@ public class Parser{
       explorer.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
       int returnValue = explorer.showOpenDialog(null);
       File directory = explorer.getSelectedFile();
-      if(directory.list().length != 0){
-         try{
-            parse(directory);
-         }catch(IOException e){
-            e.printStackTrace();
+      if(directory != null)
+      {
+         if(directory.list().length != 0){
+            try{
+               parse(directory);
+            }catch(IOException e){
+               e.printStackTrace();
+            }
          }
       }
    }
@@ -30,7 +33,7 @@ public class Parser{
    public void parse(File directory) throws IOException{
       File[] files = directory.listFiles();      
       int numFiles = files.length;
-      int[] numWrestlers = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+      int[] numWrestlers = new int[weightClasses.length];
       Team team = new Team(numFiles);
       Scanner scan;
       int weightClass = 0;
