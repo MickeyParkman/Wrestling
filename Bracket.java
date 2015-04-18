@@ -6,6 +6,7 @@ import java.awt.Font;
 
 public class Bracket{
    private static final int[] weights = {106, 113, 120, 126, 132, 138, 145, 152, 160, 170, 182, 195, 220, 285};
+   private static final Font WEIGHT_FONT = new Font("Monospaced", Font.BOLD, 32);
    private Match[][] matches;
    private int bracketNum;
    private int numRounds, numWrestlers;
@@ -13,7 +14,6 @@ public class Bracket{
    int width = 1000, height = 700;
    private JFrame championship, consolation;
    int heightOffset, heightOffset2;
-   int h, w;
    private static final Font font = new Font("Monospaced", Font.PLAIN, 14);
    
    public Bracket(int bracketNum, int numWrestle) {
@@ -31,8 +31,8 @@ public class Bracket{
       }
       else
       {
-         this.heightOffset = 0;
-         this.heightOffset2 = 0;
+         this.heightOffset = 60;
+         this.heightOffset2 = 40;
       }
       //8  man heightoffset = 0
       //16 man heightoffset2 = 18
@@ -41,8 +41,7 @@ public class Bracket{
       currMatch = 0;
       numRounds = (int) (Math.log(numWrestle) / Math.log(2)) * 2 - 2;
       matches = new Match[numRounds + 1][];
-      int matchesPerRound = numWrestle;         
-      w = width / numRounds;
+      int matchesPerRound = numWrestle;               
       for(int i = 0; i < numRounds; i++)
       {
          if(i % 2 == 0)
@@ -54,17 +53,20 @@ public class Bracket{
       matches[numRounds] = new Match[matchesPerRound];
       championship = new JFrame(weights[bracketNum] + "lb. Championship Bracket")
       {           
-         public void paint(Graphics g){
+         public void paint(Graphics g){             
+            int w = width / (numRounds / 2 + 2);
             int h = height / numWrestlers - 2; 
             g.clearRect(0,0,width,height);
             g.setColor(Color.BLACK);
+            g.setFont(WEIGHT_FONT);
+            g.drawString(weights[bracketNum] + " lbs.", width - 200, 100);
             g.setFont(font);
             for(int i = 0; i < matches.length; i++){ 
                for(int j = 0; j < matches[i].length; j++){
                   if(matches[i][j]  != null){
                      if(i == 0){
                            g.drawString(matches[i][j].wrestler1.name, i + w / 2 - matches[i][j].wrestler1.name.length() * 4, j * 2 * h + heightOffset);
-                           g.drawString(matches[i][j].wrestler2.name, i + w / 2 - matches[i][j].wrestler1.name.length() * 4, j * 2 * h + heightOffset + h);
+                           g.drawString(matches[i][j].wrestler2.name, i + w / 2 - matches[i][j].wrestler2.name.length() * 4, j * 2 * h + heightOffset + h);
                            g.fillRect(i, j * 2 * h + heightOffset + 5, w, 2);
                            g.fillRect(i, j * 2 * h + heightOffset + h + 5, w, 2);
                            g.fillRect(i + w - 2, j * 2 * h + heightOffset + 5, 2, h);
@@ -92,13 +94,16 @@ public class Bracket{
       {            
              
          public void paint(Graphics g)
-         {
+         {               
+            int w = width / numRounds;
             int h = (int) height / (numWrestlers / 2) - 10;
             int matchesPerRound = numWrestlers / 4;
             int yOffset = 0;
             int yOffConst = 0;
             g.clearRect(0,0,width,height);
             g.setColor(Color.BLACK);
+            g.setFont(WEIGHT_FONT);
+            g.drawString(weights[bracketNum] + " lbs.", width - 200, 100);  
             g.setFont(font);
             for(int i = 1; i < matches.length; i++)
             { 
@@ -106,8 +111,8 @@ public class Bracket{
                for(int j = 0; j < matches[i].length; j++){
                   if(matches[i][j] != null && matches[i][j].isConsolation && i != matches.length - 1){
                      int y = (matchesPerRound - 1 - consolationIndex) * 2 * h + yOffset;
-                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - h - 25);
-                     g.drawString(matches[i][j].wrestler2.name, (i - 1) * w + w / 2 - matches[i][j].wrestler2.name.length() * 4, height -  y - 25);
+                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - h - 30);
+                     g.drawString(matches[i][j].wrestler2.name, (i - 1) * w + w / 2 - matches[i][j].wrestler2.name.length() * 4, height -  y - 30);
                      g.fillRect((i - 1) * w, height - y - h - 25, w, 2);
                      g.fillRect((i - 1) * w, height - y - 25, w, 2);
                      g.fillRect((i - 1) * w + w - 2, height - y - h - 25, 2, h);
@@ -116,7 +121,7 @@ public class Bracket{
                   else if(matches[i][j] != null && matches[i][j].isConsolation)
                   {
                      int y = (matchesPerRound - 1 - consolationIndex) * 2 * h + yOffset;                     
-                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - 25);
+                     g.drawString(matches[i][j].wrestler1.name, (i - 1) * w + w / 2 - matches[i][j].wrestler1.name.length() * 4, height -  y - 30);
                      g.fillRect((i - 1) * w, height - y - 25, w, 2);
                      consolationIndex++;
                   }
@@ -144,20 +149,18 @@ public class Bracket{
       consolation.setSize(new Dimension(width,height));  
       championship.setLocationRelativeTo(null);
       consolation.setLocationRelativeTo(null);
-      championship.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      consolation.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+      championship.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      consolation.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);        
    }
    
    public void showChampionship()
    {
       championship.setVisible(true);
-      championship.getGraphics().setFont(font);
    }
    
    public void showConsolation()
    {
       consolation.setVisible(true);
-      consolation.getGraphics().setFont(font);
    }
    
    public void addMatch(Match m)

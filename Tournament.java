@@ -3,7 +3,7 @@ public class Tournament{
 
    public Bracket[] brackets;
    public static Match[] matches;
-   public static double[] roundToMatchRatio = {0, 7, 14, 17.5, 21, 22.75, 24.5, 25.375}; 
+   public static double[] roundToMatchRatio = {0, 7, 14, 17.5, 21, 22.75, 24.5, 25.375, 26.25}; 
    public static int wrestlersPerBracket;
    public static final int NUM_BRACKETS = 14;
    
@@ -64,6 +64,7 @@ public class Tournament{
       }
            
       brackets[2].showChampionship();
+      brackets[2].showConsolation();
                   
       for(int i = 0; i < NUM_BRACKETS; i++){
          int startIndex = i * wrestlers[i].length / 2;

@@ -162,7 +162,8 @@ public class Match{
       int weight = (matchNumber - startNum) / matchesPerRound;
       int mNum = 0;
       Match nextMatch;
-      if(roundNum != lastRound){                           
+      if(roundNum != lastRound)
+      {                           
          if(roundNum == 0){            
             mNum = nextRoundStartNum + weight * matchesPerRound + matchesPerRound / 2 + (matchNumber - weight * matchesPerRound) / 2;
             nextMatch = Tournament.matches[mNum];

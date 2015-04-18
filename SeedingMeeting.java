@@ -18,6 +18,7 @@ public class SeedingMeeting extends JFrame{
    public SeedingMeeting(Wrestler[][] wrestlers, int numWrestling){
       this.theWrestlers = wrestlers;
       this.numWrestlers = numWrestling;
+      createByes();
       final WrestlerDisplay[] panels = new WrestlerDisplay[wrestlers.length];
       for(int i = 0; i < panels.length; i++){
          panels[i] = new WrestlerDisplay(wrestlers[i]);
@@ -103,6 +104,20 @@ public class SeedingMeeting extends JFrame{
       setVisible(true);
    }
    
+   private void createByes()
+   {
+      for(int i = 0; i < theWrestlers.length; i++)
+      {
+         for(int j = 0; j < theWrestlers[i].length; j++)
+         {
+            if(theWrestlers[i][j] == null)
+            {
+               theWrestlers[i][j] = new Wrestler("BYE", "", false, -1);
+            }
+         }
+      }
+   }
+   
    private class WrestlerDisplay extends JPanel{
       public WrestlerDisplay(final Wrestler[] wrestlers){
          
@@ -114,8 +129,8 @@ public class SeedingMeeting extends JFrame{
          
          for(int i = 0; i < wrestlers.length; i++){
             final JButton wrestler;
-            if(wrestlers[i] == null)
-               wrestler = new JButton(String.format("%-20s (%s)","BYE", ""));
+            if(wrestlers[i].name == "BYE")
+               wrestler = new JButton(String.format("%-20s",wrestlers[i].name));
             else
                wrestler = new JButton(String.format("%-20s (%s)",wrestlers[i].name, wrestlers[i].teamName));
             wrestler.setHorizontalAlignment(JButton.LEFT);
